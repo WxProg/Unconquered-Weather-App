@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, InputRequired, ValidationError
 from email_validator import validate_email, EmailNotValidError
 
@@ -41,9 +41,32 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label="Log In")
 
 
+class ForgetPasswordFormForgetUsernameForm(FlaskForm):
+    email = StringField(label="Enter your email address", validators=[InputRequired(), Email(), EmailValidator()])
+    submit = SubmitField(label="Find Me")
+
+# 
+# class ForgetUsernameForm(FlaskForm):
+#     email = StringField(label="Enter your email address", validators=[DataRequired()])
+#     submit = SubmitField(label="Find Me")
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(label="Password", validators=[InputRequired(), Length(min=8, max=10)])
+    confirm_password = PasswordField(label="Confirm Password", validators=[
+        InputRequired(),
+        Length(min=8, max=10),
+        EqualTo("password", message='Passwords must match!')])
+    submit = SubmitField(label="Reset Password")
+
+
 class AddCityForm(FlaskForm):
     city_name = StringField(label="City Name:", validators=[DataRequired()])
     state_code = StringField(label="State Code:", validators=[DataRequired(), Length(max=2)])
     add_city = SubmitField(label="Add City")
-    edit_city = SubmitField(label="Edit City")
     delete_city = SubmitField(label="Delete City")
+
+
+class ChooseBackgroundForm(FlaskForm):
+    background = SelectField('Background Image', choices=[], validators=[DataRequired()])
+    submit = SubmitField('Choose')
