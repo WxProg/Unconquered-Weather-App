@@ -1,0 +1,125 @@
+{% extends "base_layout.html" %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/weather_info.css') }}"
+/>
+{% endblock %}
+
+{% block title %} UwaHome {% endblock %}
+
+{% block content %}
+<body>
+<nav class="navbar">
+    <div class="container-fluid">
+      <h1>Welcome {{ whoami }}</h1>
+      <a class="btn btn-primary" href="{{ url_for('logout') }}" role="button">Log Out</a>
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+  <div class="container">
+    {% if city_details|length < 6 %}
+    <div class="row">
+      <form action="{{ url_for('details_page') }}" method="POST" class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-12" novalidate autocomplete="off">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+          {{ form.city_name.label(class_='form-label') }}
+          <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 p-0">
+            {{ form.city_name(class_='form-control') }}
+          </div>
+        </div>
+        <div class="mb-3">
+          {{ form.state_code.label(class_='form-label') }}
+          <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 p-0">
+            {{ form.state_code(class_='form-control') }}
+          </div>
+        </div>
+        <div class="text-center">
+          {{ form.add_city(class_='btn btn-outline-success mb-3') }}
+        </div>
+      </form>
+    </div>
+
+    {% else %}
+    <p id="maxCitiesMessage">
+      You have added the maximum number of cities. Please remove a city before adding a new one.
+    </p>
+    {% endif %}
+  </div>
+
+  <div class="container">
+    <div class="row">
+      {% for city in city_details %}
+      <div class="col-lg-4 col-md-6">
+        <div class="card mb-3 weather-card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between">
+              <div class="weather-detail">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-tachometer-alt weatherparams"></i>
+                  <h2>{{ city.weatherData.pressure }}hPa</h2>
+                </div>
+                <p>Pressure</p>
+              </div>
+              <div class="weather-detail">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-eye weatherparams"></i>
+                  <h2>{{ city.weatherData.visibility }}km</h2>
+                </div>
+                <p>Visibility</p>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <h2 class="icon"><i class="{{ city.weatherData.description_icon_url }}"></i></h2>
+              <h2 class="temp">{{ city.weatherData.temperature }} °F</h2>
+              <h3 class="city">{{ city.cityName }}, {{ city.stateCode }}</h3>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="weather-detail">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-wind weatherparams"></i>
+                  <h2>{{ city.weatherData.wind_speed }}m/h</h2>
+                </div>
+                <p>Wind Speed</p>
+              </div>
+              <div class="weather-detail">
+                <div class="d-flex align-items-center">
+                  <i class="fas fa-tint weatherparams"></i>
+                  <h2>{{ city.weatherData.humidity }}%</h2>
+                </div>
+                <p>Humidity</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <form method="POST" action="{{ url_for('city_delete') }}" class="w-100">
+              {{ form.csrf_token }}
+              <input type="hidden" name="city_name" value="{{ city.cityName }}"      />
+              <input type="hidden" name="state_code" value="{{ city.stateCode }}" />
+              {{ form.delete_city(class_="btn btn-danger w-100") }}
+            </form>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <p>
+        You have not added any cities yet. Use the form above to add a city.
+      </p>
+      {% endfor %}
+    </div>
+  </div>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename='js/weather_info.js') }}"></script>
+</body>
+{% endblock %}

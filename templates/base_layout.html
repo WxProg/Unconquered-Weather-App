@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Playfair+Display:wght@900&family=Roboto&family=Roboto+Slab&display=swap" rel="stylesheet" />
+
+    <!-- Include Bootstrap CSS -->
+    {{ bootstrap.load_css() }}
+
+    <!-- Include Fontawesome -->
+        <script src="https://kit.fontawesome.com/68535ed035.js" crossorigin="anonymous"></script>
+
+
+    {% block head %}
+    {% endblock %}
+
+    <title>{% block title %} {% endblock %}</title>
+  </head>
+  <body>
+
+    {% block content %}{% endblock content %}
+        <!-- Include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    {% block scripts %}{% endblock %}
+    <!-- Include Bootstrap JavaScript -->
+    {{ bootstrap.load_js() }}
+  </body>
+{%   block  footer %}
+{% endblock %}
+</html>

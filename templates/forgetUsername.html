@@ -1,0 +1,41 @@
+{% extends "base_layout.html" %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/forgetpassword_forgetusername.css') }}"
+/>
+{% endblock %}
+
+{% block title %} Forget Your Username? {% endblock %}
+
+{% block content %}
+<body style="background-image: url('/static/images/forget_username-bg.jpg');">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <h1>Forgot Your Username?</h1>
+         {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <div class="form-container">
+          <form method="POST" action="{{ url_for('forget_username') }}" novalidate>
+            {{ form.csrf_token }}
+            <div class="mb-3">
+              {{ form.email.label(class_='form-label') }}
+              {{ form.email(class_='form-control') }}
+            </div>
+            <div class="mt-4">
+              {{ form.submit(class_='btn btn-outline-success btn-custom') }}
+            </div>
+          </form>
+       </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

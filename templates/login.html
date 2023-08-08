@@ -1,0 +1,79 @@
+{% extends "base_layout.html" %}
+
+{% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/login.css') }}"
+/>
+{% endblock %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <h1 class="text-center">Login</h1>
+      <div class="form-container">
+        <form method="POST" action="{{ url_for('login_page') }}" novalidate>
+          {{ form.csrf_token }} {% with messages =
+          get_flashed_messages(with_categories=true) %} {% if messages %} {% for
+          category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %} {% endif %} {% endwith %}
+          <div class="mb-3">
+            {{ form.username.label(class_='form-label') }} {{
+            form.username(class_='form-control') }} {% for error in
+            form.username.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <a href="{{ url_for('forget_username') }}" class="text-muted">Forget Username?</a>
+          </div>
+          <div class="mb-3">
+            {{ form.password.label(class_='form-label') }}
+            <div class="input-container">
+              <div class="input-wrapper">
+                {{ form.password(class_='form-control') }}
+              </div>
+              <div class="btn-wrapper">
+                <button
+                  id="togglePassword"
+                  class="btn btn-secondary"
+                  type="button"
+                >
+                  <i class="fa fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            {% for error in form.password.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <a href="{{ url_for('forget_password') }}" class="text-muted"
+              >Forget Password?</a
+            >
+          </div>
+          <div class="d-flex justify-content-between">
+            <div class="mb-3">
+              {{ form.submit(class_="btn btn-outline-primary") }}
+            </div>
+            <div class="mb-3">
+              <a
+                href="{{ url_for('signup_page') }}"
+                class="btn btn-outline-primary"
+                >Sign Up</a
+              >
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}
+{% block footer %}
+<footer>Copyright   ©️  {{ current_year }} The Unconquered Weather App </footer>
+{% endblock %}
