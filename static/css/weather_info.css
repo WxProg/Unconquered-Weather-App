@@ -36,3 +36,7 @@ h1 {
 .weather-detail p {
     margin: 0;
 }
+
+.tempC{
+    font-size: 24px;
+}

@@ -39,8 +39,13 @@ def extract_weather_data(weather_data):
     visibility_in_km = weather_data['visibility'] /1000
     truncated_visibility = round(visibility_in_km, 1)
 
+    # Convert temp from from Fahrenheit to Celcius
+    temperatureCelcius = (weather_data['main']['temp'] - 32)  *  5/9
+    roundTempC = round(temperatureCelcius,2)
+
     return {
-        'temperature': weather_data['main']['temp'],
+        'tempF': weather_data['main']['temp'],
+        'tempC':roundTempC,
         'max_temp': weather_data['main']['temp_max'],
         'min_temp': weather_data['main']['temp_min'],
         'humidity': weather_data['main']['humidity'],
